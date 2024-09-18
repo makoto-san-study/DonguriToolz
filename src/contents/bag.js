@@ -12,10 +12,12 @@ getOption('enabled_bag_chest').then(enabled => { if(enabled == 'true') {
 }}).catch(e => {});
 
 getOption('enabled_bag_count').then(enabled => { if(enabled == 'true') {
+  const slots = parseInt(document.querySelector('h5').textContent.match(/\d+/)[0]);
   const weapons = document.querySelector('#weaponTable > tbody').rows.length;
   const armors = document.querySelector('#armorTable > tbody').rows.length;
+  const used = weapons + armors;
   document.querySelector('h5 > br')
   .insertAdjacentElement('afterend', document.createElement('br'))
-  .insertAdjacentText('beforebegin', `（${weapons + armors}スロット使用）`);
+  .insertAdjacentText('beforebegin', `（${used}スロット使用、${slots - used}スロット空き）`);
 }}).catch(e => {});
 

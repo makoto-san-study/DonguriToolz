@@ -3,8 +3,8 @@
   
   "manifest_version": 2,
   "name": "DonguriToolz",
-  "version": "0.2.0",
-  "description": "DonguriToolz",
+  "version": "0.3.0",
+  "description": "どんぐりシステムを使いやすく勝手に改造",
   
   "permissions":[
     "storage"
@@ -15,7 +15,6 @@
   "background":{"scripts": ["background/background.js"]},
   
   "content_scripts": [
-    {"matches": ["https://donguri.5ch.net/bag"], "js": ["contents/bag.js"]},
-    {"matches": ["https://donguri.5ch.net/dummy"], "js": ["contents/dummy.js"]}
+    {"matches": ["https://donguri.5ch.net/bag"], "js": ["contents/bag.js"]}
   ]
 }
