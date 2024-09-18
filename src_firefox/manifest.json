@@ -1,0 +1,20 @@
+{
+  "applications": {"gecko": {"id": "DonguriToolz@example.com"}},
+  
+  "manifest_version": 2,
+  "name": "DonguriToolz",
+  "version": "0.1.0",
+  "description": "DonguriToolz",
+  
+  "permissions":[
+    "storage"
+  ],
+  
+  "options_ui": {"page": "options/options.html"},
+  
+  "background":{"scripts": ["background/background.js"]},
+  
+  "content_scripts": [
+     {"matches": ["https://donguri.5ch.net/dummy"], "js": ["contents/dummy.js"]}
+  ]
+}
