@@ -20,7 +20,7 @@ getOption('enabled_arena_result').then(enabled => { if(enabled == 'true') {
   const space = document.createElement('canvas');
   
   // TODO: iframeのstyleを変更したい場合はここを変えてしまう
-  iframe.setAttribute('style', 'position: fixed; top: 70vh; left: 0; width: 100vw; height: 30vh; background-color: #fff;');
+  iframe.setAttribute('style', 'position: fixed; top: 70vh; left: 5vw; width: 90vw; height: 30vh; background-color: #fff;');
   space.setAttribute('style', 'display: hidden; width: 1px; height: 30vh;');
   iframe.setAttribute('name', 'result');
   iframe.addEventListener('load', event => {
