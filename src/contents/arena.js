@@ -34,7 +34,6 @@ getOption('enabled_arena_result').then(enabled => { if(enabled == 'true') {
 
   document.querySelectorAll('form[action="https://donguri.5ch.net/challenge"]').forEach(form => {
     form.target = 'result';
-    form.addEventListener('submit', event=>{});
   });
 }}).catch(e => {});
 
