@@ -7,6 +7,9 @@
 - アイテムバッグに装備の履歴を表示
 - アリーナを適当にソート
 
+## イメージ
+<img src="doc/images/options.png " width="240px" title="v0.5.0のオプション画面">
+
 ## インストール
 ### Chrome
 1. zipファイルを[ダウンロード](https://github.com/makoto-san-study/DonguriToolz/releases)する
