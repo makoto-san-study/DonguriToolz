@@ -10,8 +10,39 @@ function setOption(key, value) {
 }
 
 getOption('enabled_bag_chest').then(enabled => { if(enabled == 'true') {
-  document.querySelector('body > header > h3')
-  .innerHTML = '<form style="margin:0 auto; max-width:100%;" action="https://donguri.5ch.net/open" method="post"><input type="hidden" name="chestsize" value="B70"><div style="margin-bottom:0px; text-align:center;"><input type="submit" value="大型サイズの宝箱を開ける"></div></form>';
+  const slots = parseInt(document.querySelector('h5').textContent.match(/\d+/)[0]);
+  const weapons = document.querySelector('#weaponTable > tbody').rows.length;
+  const armors = document.querySelector('#armorTable > tbody').rows.length;
+  const used = weapons + armors;
+  const chest = Math.floor((slots - used + 39) / 40);
+  if (chest > 0) {
+    const button = document.createElement('input');
+    button.setAttribute('type', 'button');
+    button.setAttribute('value', `大型サイズの宝箱を${chest}回開けてみる（${chest*40}スロット分）`);
+    button.onclick = () => {
+      let p = Promise.resolve();
+      for (let n=0;n<chest;n++) {
+        p = p.then(()=>new Promise((resolve, reject) => {
+          fetch('https://donguri.5ch.net/open',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'chestsize=B70'})
+          .then(response => {
+            if (response.ok && response.redirected) {
+              resolve();
+            } else {
+              reject();
+            }
+          }).catch(err => {
+            reject();
+          });
+        }));
+      }
+      p.catch(err=>{
+      }).then(()=>{
+        location.reload();
+      });
+    };
+    document.querySelector('body > header > h3')
+    .replaceChildren(button);
+  }
 }}).catch(e => {});
 
 getOption('enabled_bag_count').then(enabled => { if(enabled == 'true') {
