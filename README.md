@@ -5,11 +5,13 @@
 - アイテムバッグに宝箱ボタン生成
 - アイテムバッグに使用と空きスロット数の表示
 - アイテムバッグに装備の履歴を表示
+- アイテムバッグにレアリティごとの分解ボタンを表示
 - アリーナを適当にソート
 - アリーナの挑戦結果を画面下に表示
 
 ## イメージ
-<img src="doc/images/options.png " width="240px" title="v0.5.0のオプション画面">
+<img src="doc/images/options.png" width="240px" title="v0.5.0のオプション画面">
+<img src="doc/images/v0.8_bag.png" width="240px" title="v0.8.0のアイテムバッグ画面">
 
 ## 使い方
 1. 機能拡張のページよりオプションを表示する
