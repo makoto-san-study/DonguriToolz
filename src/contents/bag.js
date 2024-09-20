@@ -113,4 +113,45 @@ getOption('enabled_bag_history').then(enabled => { if(enabled == 'true') {
   });
 }}).catch(e => {});
 
+getOption('enabled_bag_recycle').then(enabled => { if(enabled == 'true') {
+  function onclick(rarityreg) {
+    return () => {
+      let p = Promise.resolve();
+      ['#weaponTable', '#armorTable'].forEach(parts => {
+        Array.from(document.querySelector(parts + '> tbody').rows).forEach(row => {
+          if (row.lastChild.textContent != '[X]' && rarityreg.test(row.firstChild.textContent)) {
+            p = p.then(()=>new Promise((resolve, reject) => {
+              fetch(row.lastChild.firstChild.href)
+              .then(response => {
+                if (response.ok) {
+                  resolve();
+                } else {
+                  reject();
+                }
+              }).catch(err => {
+                reject();
+              });
+            }));
+          }
+        });
+      });
+      p.catch(err=>{
+      }).then(()=>{
+        location.reload();
+      });
+    };
+  }
+  const buttons = [{rarity:'N', reg:/\[(?:N)\]/}, {rarity:'NとR', reg:/\[(?:N|R)\]/}, {rarity:'NとRとSR', reg:/\[(?:N|R|SR)\]/}]
+  .map(info => {
+    const button = document.createElement('input');
+    button.setAttribute('type', 'button');
+    button.setAttribute('value', `未ロックの${info.rarity}を分解`);
+    button.setAttribute('style', 'margin: 0 1em;');
+    button.onclick = onclick(info.reg);
+    return button;
+  });
+  document.querySelector('header').appendChild(document.createElement('div')).append(...buttons);
+}}).catch(e => {});
+
+
 
