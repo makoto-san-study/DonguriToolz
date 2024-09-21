@@ -17,11 +17,9 @@ getOption('enabled_arena_sort').then(enabled => { if(enabled == 'true') {
 
 getOption('enabled_arena_result').then(enabled => { if(enabled == 'true') {
   const iframe = document.createElement('iframe');
-  const space = document.createElement('canvas');
   
   // TODO: iframeのstyleを変更したい場合はここを変えてしまう
-  iframe.setAttribute('style', 'position: fixed; top: 70vh; left: 5vw; width: 90vw; height: 30vh; background-color: #fff;');
-  space.setAttribute('style', 'display: hidden; width: 1px; height: 30vh;');
+  iframe.setAttribute('style', 'position: sticky; top: 0vh; left: 0; width: 90vw; height: 20vh; z-index: 10; background-color: #fff;');
   iframe.setAttribute('name', 'result');
   iframe.addEventListener('load', event => {
     // TODO: <meta name="color-scheme" content="light dark">を削除する
@@ -29,8 +27,7 @@ getOption('enabled_arena_result').then(enabled => { if(enabled == 'true') {
     // TODO: 最終行が見えるようスクロールしてしまう
     iframe.contentWindow.scroll(0, 30000);
   });
-  document.body.appendChild(space);
-  document.body.appendChild(iframe);
+  document.body.prepend(iframe);
 
   document.querySelectorAll('form[action="https://donguri.5ch.net/challenge"]').forEach(form => {
     form.target = 'result';

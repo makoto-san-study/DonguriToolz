@@ -7,11 +7,18 @@
 - アイテムバッグに装備の履歴を表示
 - アイテムバッグにレアリティごとの分解ボタンを表示
 - アリーナを適当にソート
-- アリーナの挑戦結果を画面下に表示
+- アリーナの挑戦結果を画面上に表示
 
 ## イメージ
-<img src="doc/images/options.png" width="240px" title="v0.5.0のオプション画面">
-<img src="doc/images/v0.8_bag.png" width="240px" title="v0.8.0のアイテムバッグ画面">
+<table>
+<tr>
+<td><img src="doc/images/options.png" width="240px" title="v0.5.0のオプション画面">
+<td><img src="doc/images/v0.8_bag.png" width="240px" title="v0.8.0のアイテムバッグ画面">
+</tr><tr>
+<td><img src="doc/images/v0.9_a_bag.png" width="240px" title="v0.9.0のAndroid版アイテムバッグ画面">
+<td><img src="doc/images/v0.9_a_arena.png" width="240px" title="v0.9.0のAndroid版アリーナ画面">
+</tr>
+</table>
 
 ## 使い方
 1. 機能拡張のページよりオプションを表示する
@@ -30,6 +37,10 @@
 1. zipファイルを[ダウンロード](https://github.com/makoto-san-study/DonguriToolz/releases)する（chrome用をダウンロード）
 2. zipファイルを解凍する
 3. 開発者モードにして、「展開して読み込み」で解凍したディレクトリを指定する
+### Android版Firefox（Nightly）
+1. xpiファイルを[ダウンロード](https://github.com/makoto-san-study/DonguriToolz/releases)する
+2. デバッグメニューを有効にする（「Firefox Nightlyについて」にあるロゴを5回タップ）
+3. ひとつ戻って「ファイルから拡張機能をインストール」でダウンロードしたxpiファイルを指定する
 
 ## アンインストール
 アドオンなので削除してしまえば綺麗さっぱり消えます

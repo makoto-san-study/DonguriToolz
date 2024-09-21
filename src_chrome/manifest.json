@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "DonguriToolz",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "どんぐりシステムを使いやすく勝手に改造",
   
   "permissions":[
