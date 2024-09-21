@@ -18,7 +18,7 @@ getOption('enabled_bag_chest').then(enabled => { if(enabled == 'true') {
   if (chest > 0) {
     const button = document.createElement('input');
     button.setAttribute('type', 'button');
-    button.setAttribute('value', `大型サイズの宝箱を${chest}回開けてみる（${chest*40}スロット分）`);
+    button.setAttribute('value', `大箱${chest}回（${chest*40}スロット分）`);
     button.onclick = () => {
       let p = Promise.resolve();
       for (let n=0;n<chest;n++) {
@@ -141,12 +141,12 @@ getOption('enabled_bag_recycle').then(enabled => { if(enabled == 'true') {
       });
     };
   }
-  const buttons = [{rarity:'N', reg:/\[(?:N)\]/}, {rarity:'NとR', reg:/\[(?:N|R)\]/}, {rarity:'NとRとSR', reg:/\[(?:N|R|SR)\]/}]
+  const buttons = [{rarity:'N', reg:/\[(?:N)\]/}, {rarity:'NとR', reg:/\[(?:N|R)\]/}, {rarity:'SR以下', reg:/\[(?:N|R|SR)\]/}]
   .map(info => {
     const button = document.createElement('input');
     button.setAttribute('type', 'button');
-    button.setAttribute('value', `未ロックの${info.rarity}を分解`);
-    button.setAttribute('style', 'margin: 0 1em;');
+    button.setAttribute('value', `${info.rarity}分解`);
+    button.setAttribute('style', 'margin: 0 0.5em; width: auto;');
     button.onclick = onclick(info.reg);
     return button;
   });
