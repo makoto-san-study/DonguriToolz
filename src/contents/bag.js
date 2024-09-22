@@ -212,4 +212,86 @@ getOption('enabled_bag_lock').then(enabled => { if(enabled == 'true') {
   });
 }}).catch(e => {});
 
+getOption('enabled_bag_sort').then(enabled => { if(enabled == 'true') {
+  const onclick = (order, direction, colIndex, saveOrder) => {
+    return event => {
+      const table = event.target.parentElement.parentElement.parentElement;
+      const tbody = table.lastChild;
+      const rowsArray = Array.from(tbody.rows);
+      sort(rowsArray, colIndex, direction[colIndex]);
+      direction[colIndex] = !direction[colIndex];
+      rowsArray.forEach(row => tbody.appendChild(row));
+      if (colIndex == 1) {
+        order.length = 0;
+        if (!direction[colIndex]) {
+          order.push(colIndex);
+          order.push(colIndex);
+        }
+      } else {
+        order.push(colIndex);
+      }
+      saveOrder();
+    };
+  };
+
+  function sort(arr, colIndex, direction) {
+    function to8Number(value) {
+      // 12桁に拡張
+      return value.replace(/\d+/g, (m) => ("000000000000" + m).slice(-12));
+    }
+
+    function extractString(row) {
+      var value = row.getElementsByTagName("TD")[colIndex].textContent;
+      if (colIndex == 0) {
+        // 名前（レアリティで昇順降順、名前で昇順）
+        [v2, ...v3] = value.replace(/(.*)\[([A-Z]{1,3})\](.*)/s, "$2,$1$3").split(",");
+        return ["", v2, v3.join(",")];
+      } else if (colIndex == 1) {
+        // 装備（アイテムIDで昇順降順）
+        value = row.getElementsByTagName("TD")[colIndex].lastChild.href.split('/').pop();
+      } else if (colIndex == 3) {
+        // ATK,DEF（最大値,最小値で昇順降順）
+        value = value.replace(/(\d+)(?:.*?)(\d+)/, "$2,$1");
+      } else if (colIndex == 6) {
+        // ELEM（[火氷雷風地水光闇なし]順、属性値で昇順降順）
+        [v2, ...v1] = value.replace(/(\D*)(\d*)(\D*)/, "$2,$1$3").split(",");
+        return [String("火氷雷風地水光闇なし".search(v1.join(","))), to8Number(v2), ""];
+      }
+      return ["", to8Number(value), ""];
+    }
+    order = direction ? -1 : 1;
+    arr.sort((a, b) => {
+      a = extractString(a);
+      b = extractString(b);
+      return a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]) * order || a[2].localeCompare(b[2]);
+    });
+  }
+
+  getOption('bag_sort_order').then(order => {
+    order = JSON.parse(order || '{}');
+    const direction = {};
+    const saveOrder = () => {
+      setOption('bag_sort_order', JSON.stringify(order));
+    };
+    ['weaponTable', 'armorTable'].forEach(parts => {
+      order[parts] = order[parts] || [];
+      direction[parts] = [];
+      const tbody = document.querySelector('#' + parts + ' > tbody');
+      const rowsArray = Array.from(tbody.rows);
+      order[parts].forEach(colIndex => {
+        sort(rowsArray, colIndex, direction[parts][colIndex]);
+        direction[parts][colIndex] = !direction[parts][colIndex];
+      });
+      rowsArray.forEach(row => tbody.appendChild(row));
+
+      Array.from(document.querySelectorAll('#' + parts + ' > thead > tr > th')).forEach((th,index) => {
+        if(index == 9) return;
+        th.onclick = onclick(order[parts], direction[parts], index, saveOrder);
+      });
+    });
+  });
+}}).catch(e => {});
+
+
+
 
