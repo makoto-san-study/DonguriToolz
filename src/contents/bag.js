@@ -153,5 +153,63 @@ getOption('enabled_bag_recycle').then(enabled => { if(enabled == 'true') {
   document.querySelector('header').appendChild(document.createElement('div')).append(...buttons);
 }}).catch(e => {});
 
+getOption('enabled_bag_lock').then(enabled => { if(enabled == 'true') {
+  function getRows(doc) {
+    const tables = Array.from(doc.querySelectorAll('table[id] > tbody'));
+    return [].concat(...tables.map(table => Array.from(table.rows)));
+  }
+  const getLockTag = row => row.children[2].lastChild;
+  const getItemId = tag => tag?.querySelector('a')?.href?.split('/')?.pop();
+  const getLockStatus = tag => tag?.textContent == '[解錠]' ? 2 : 1;
+
+  function onclick(url) {
+    return event => {
+      const id = getItemId(event.target.parentElement);
+      const lockTag = event.target.lastChild;
+      const lockStatus = getLockStatus(lockTag);
+      changeLockTag(lockTag);
+      fetch(url).then(res => res.text()).then(text => {
+        for (row of getRows(new DOMParser().parseFromString(text, 'text/html'))) {
+          if (id == getItemId(row)) {
+            const anchorTag = getLockTag(row);
+            changeLockTag(lockTag, anchorTag, lockStatus);
+            return;
+          }
+        }
+        throw 0;
+      }).catch(err => {
+        changeLockTag(lockTag, null, -1);
+      });
+    };
+  }
+  
+  function changeLockTag(lockTag, anchorTag = null, lockStatus = 0) {
+    if (lockStatus == 0 && !anchorTag) {
+      lockTag.textContent = '[待]';
+      lockTag.setAttribute('style', 'color: black');
+    } else {
+      const newLockStatus = getLockStatus(anchorTag);
+      if (lockStatus == -1 || lockStatus == newLockStatus) {
+        lockTag.textContent = '[失敗]';
+        lockTag.setAttribute('style', 'color: blue');
+      } else {
+        if (newLockStatus == 1) {
+          lockTag.textContent = '[錠]';
+          lockTag.setAttribute('style', 'color: #ffb300');
+        } else {
+          lockTag.textContent = '[解錠]';
+          lockTag.setAttribute('style', 'color: red');
+        }
+        lockTag.parentElement.onclick = onclick(anchorTag.href);
+      }
+    }
+  }
+  getRows(document).forEach(row => {
+    const newLockTag = document.createElement('span');
+    const anchorTag = getLockTag(row);
+    anchorTag.parentElement.replaceChildren(newLockTag);
+    changeLockTag(newLockTag, anchorTag);
+  });
+}}).catch(e => {});
 
 
