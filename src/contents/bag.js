@@ -167,6 +167,7 @@ getOption('enabled_bag_lock').then(enabled => { if(enabled == 'true') {
       const id = getItemId(event.target.parentElement);
       const lockTag = event.target.lastChild;
       const lockStatus = getLockStatus(lockTag);
+      lockTag.parentElement.onclick = ()=>{};
       changeLockTag(lockTag);
       fetch(url).then(res => res.text()).then(text => {
         for (row of getRows(new DOMParser().parseFromString(text, 'text/html'))) {
