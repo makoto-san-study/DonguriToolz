@@ -35,7 +35,7 @@ getOption('enabled_modify_maximum_value').then(enabled => { if(enabled == 'true'
     return [v, mod];
   });
   detail.slice(4, 8).forEach((tag, i) => {
-    if (i == 0) return;
+    if (i == 0 || i == 3) return;
     tag.append(`(${maximum[i][0]}/+${maximum[i][1]})`);
   });
 }}).catch(err => {});
