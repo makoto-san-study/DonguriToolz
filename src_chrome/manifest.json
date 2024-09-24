@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "DonguriToolz",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "どんぐりシステムを使いやすく勝手に改造",
   
   "permissions":[
@@ -18,6 +18,10 @@
     {"matches": ["https://donguri.5ch.net/"], "js": ["contents/root.js"]},
     {"matches": ["https://donguri.5ch.net/bag"], "js": ["contents/bag.js"]},
     {"matches": ["https://donguri.5ch.net/modify/*"], "js": ["contents/modify.js"]},
-    {"matches": ["https://donguri.5ch.net/arena"], "js": ["contents/arena.js"]}
+    {"matches": ["https://donguri.5ch.net/arena"], "js": ["contents/arena.js"]},
+    {"matches": ["https://donguri.5ch.net/itemwatch"], "js": ["commons/items.js","contents/itemwatch.js"]},
+    {"matches": ["https://donguri.5ch.net/cannonlogs"], "js": ["contents/cannonlogs.js"]},
+    {"matches": ["https://donguri.5ch.net/fightlogs"], "js": ["contents/fightlogs.js"]},
+    {"matches": ["https://donguri.5ch.net/arenalogs"], "js": ["contents/arenalogs.js"]}
   ]
 }
