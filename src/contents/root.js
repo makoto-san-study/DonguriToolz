@@ -10,8 +10,29 @@ function setOption(key, value) {
 }
 
 getOption('enabled_root_auto_access').then(enabled => { if(enabled == 'true') {
-  const interval_id = setInterval(()=>{
-    fetch('https://donguri.5ch.net/').catch(err => {});
+  const logTag = document.createElement('textarea');
+  logTag.setAttribute('readonly', '');
+  logTag.style.resize = 'none';
+  logTag.style.width = '100%';
+  logTag.style.height = '400px';
+  logTag.style.overflow = 'scroll';
+  logTag.style.whiteSpace = 'pre';
+  logTag.append(`[日時] どんぐり, 木材, 鉄, 鉄のキー\n`);
+  const div = document.createElement('div');
+  const label = document.createElement('label');
+  label.textContent = '自動アクセスログ';
+  document.querySelector('div.container').appendChild(div).append(label, logTag);
+  function logStatus(doc) {
+    const status = Array.from(doc.querySelectorAll('div.stat-block:nth-child(1) > div'))?.slice(0,4)?.map(tag => tag?.textContent?.split(': ')?.at(-1));
+    const date = new Date().toLocaleString('sv-SE');
+    logTag.append(`[${date}] ${status.join(', ')}\n`);
+  };
+  logStatus(document);
+  const interval_id = setInterval(() => {
+    fetch('https://donguri.5ch.net/').then(res => res.text()).then(text => {
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      logStatus(doc);
+    }).catch(err => {});
   }, 30 * 60 * 1000);
 }}).catch(err => {});
 
