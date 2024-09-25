@@ -13,7 +13,8 @@
 - アリーナの挑戦結果を画面上に表示
 - 強化画面で強化の可能回数と限界値を表示
 - アイテムウォッチにて限定アイテムを目立たせる
-- 自身に関係するログのみ表示（アリーナログでは勝敗数も表示）
+- アイテムウォッチにて自身のログのみ表示
+- 3種の大砲ログにて自身に関係するログのみ表示（アリーナログでは勝敗数や勝率も表示）
 
 ## イメージ
 <table>
@@ -23,6 +24,9 @@
 </tr><tr>
 <td><img src="doc/images/v0.9_a_bag.png" width="240px" title="v0.9.0のAndroid版アイテムバッグ画面">
 <td><img src="doc/images/v0.9_a_arena.png" width="240px" title="v0.9.0のAndroid版アリーナ画面">
+</tr><tr>
+<td><img src="doc/images/v0.14_arenalog.png" width="240px" title="v0.14.1のアリーナログ画面">
+<td>
 </tr>
 </table>
 

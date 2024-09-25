@@ -17,7 +17,7 @@ getOption('enabled_itemwatch_filter_limited').then(enabled => { if(enabled == 't
   });
 }}).catch(err => {});
 
-getOption('enabled_log_filter_self').then(enabled => { if(enabled == 'true') {
+getOption('enabled_itemwatch_filter_self').then(enabled => { if(enabled == 'true') {
   const rows = Array.from(document.querySelector('body > table > tbody').rows);
   function findName(row, names) {
     const name = row.children[1].textContent;
