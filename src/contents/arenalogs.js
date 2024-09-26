@@ -5,32 +5,59 @@ const browser_or_chrome = (this.browser || chrome);
 function getOption(key) {
   return browser_or_chrome.runtime.sendMessage({getOption: {key: key}});
 }
+function setOption(key, value) {
+  return browser_or_chrome.runtime.sendMessage({setOption: {key: key, value: value}});
+}
 
 getOption('enabled_log_filter_self').then(enabled => { if(enabled == 'true') {
   const rows = Array.from(document.querySelector('body > table > tbody').rows);
-  function findName(row, names, atkdef) {
-    const text = row.children[1].textContent.split(' vs. ');
-    let result = false;
-    for (let name of names) {
-      if (text[0] == name) {
-        atkdef[0]++;
-        result = true;
-      } else if (text.at(-1) == name) {
-        atkdef[1]++;
-        result = true;
+  const logs = rows.map(row => row.children[1].textContent);
+  const filter = {self: Array(rows.length).fill(true)};
+  Promise.all([getOption('arenalog_filter_self'), getOption('root_donguri'), ])
+  .then(values => {
+    const checked = values[0] == 'true';
+    const names = Object.values(JSON.parse(values[1] || '{}')).flatMap(id => id['names'] || []);
+    if (names.length == 0) return;
+    function findName(index) {
+      return names.some(name => logs[index].includes(name));
+    }
+    function changeDisplay(filter_name, index, display) {
+      if (filter[filter_name][index] == display) return;
+      filter[filter_name][index] = display;
+      rows[index].style.display = Object.values(filter).every(arr => arr[index]) ? null : 'none';
+    }
+    function onChangeFilter(checked) {
+      setOption('arenalog_filter_self', checked.toString());
+      if (checked) {
+        rows.forEach((_, index) => {
+          changeDisplay('self', index, findName(index));
+        });
+      } else {
+        rows.forEach((_, index) => {
+          changeDisplay('self', index, true);
+        });
       }
     }
-    return result;
-  }
-  getOption('root_donguri').then(donguri => {
-    donguri = JSON.parse(donguri || '{}');
-    const names = Object.values(donguri).flatMap(id => id['names'] || []);
-    if (names.length == 0) return;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = checked;
+    checkbox.onchange = event => onChangeFilter(event.target.checked);
+    const label = document.createElement('label');
+    label.style.display = 'inline';
+    label.append('自身のログのみ表示', checkbox);
+    document.querySelector('body > header > h6').append('（', label, '）');
+
     const atkdef = [0, 0, 0];
-    rows.forEach(row => {
-      if (!findName(row, names, atkdef)) row.style.display = 'none';
+    logs.forEach(log => {
+      log = log.split(' vs. ');
+      if (names.includes(log.at(0))) {
+        atkdef[0]++;
+      }
+      if (names.includes(log.at(-1))) {
+        atkdef[1]++;
+      }
     });
-    if (atkdef[0] != 0 || atkdef[1] != 0) {
+    if (atkdef[0] + atkdef[1] != 0) {
       atkdef[2] = atkdef[1] * 100 / (atkdef[0] + atkdef[1]);
     }
     const atk = document.createElement('td');
@@ -43,7 +70,9 @@ getOption('enabled_log_filter_self').then(enabled => { if(enabled == 'true') {
     .appendChild(document.createElement('table'))
     .appendChild(document.createElement('tr'))
     .append(atk, def, rate);
-    });
+
+    if (checked) onChangeFilter(true);
+  });
 }}).catch(err => {});
 
 
