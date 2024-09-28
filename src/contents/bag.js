@@ -293,6 +293,29 @@ getOption('enabled_bag_sort').then(enabled => { if(enabled == 'true') {
   });
 }}).catch(e => {});
 
+getOption('enabled_bag_move').then(enabled => { if(enabled == 'true') {
+  const fabdiv = document.createElement('div');
+  fabdiv.style.cssText = "position: absolute; top: 0; left: 10px; z-index: 10;";
+  const fabul = fabdiv.appendChild(document.createElement('ul'));
+  fabul.style.cssText = "list-style: none; padding: 0; position: fixed; top: 50vh; width: 70px;";
 
+  function createFAB(tag, text, onclick) {
+    if (!tag && !onclick) return;
+    const li = document.createElement('li');
+    const button = li.appendChild(document.createElement('button'));
+    button.style.width = '100%';
+    button.textContent = text;
+    button.onclick = onclick ?? (() => scrollTo(0, tag.getBoundingClientRect().top + window.scrollY));
+    fabul.appendChild(li);
+  }
+  createFAB(null, 'TOP', () => scrollTo(0,0));
+  const equip = document.querySelector('body > h3');
+  if (equip?.textContent?.startsWith('装備している')) {
+    createFAB(equip, '装備');
+  }
+  createFAB(document.querySelector('#weaponTable'), '武器');
+  createFAB(document.querySelector('#armorTable'), '防具');
+  document.body.appendChild(fabdiv);
+}}).catch(e => {});
 
 
