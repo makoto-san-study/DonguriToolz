@@ -294,28 +294,35 @@ getOption('enabled_bag_sort').then(enabled => { if(enabled == 'true') {
 }}).catch(e => {});
 
 getOption('enabled_bag_move').then(enabled => { if(enabled == 'true') {
-  const fabdiv = document.createElement('div');
-  fabdiv.style.cssText = "position: absolute; top: 0; left: 10px; z-index: 10;";
-  const fabul = fabdiv.appendChild(document.createElement('ul'));
-  fabul.style.cssText = "list-style: none; padding: 0; position: fixed; top: 50vh; width: 70px;";
-
+  const meta = document.querySelector('meta[name="viewport"]');
+  meta.content = `width=device-width, initial-scale=1, minimum-scale=1`;
+  
+  const fam = document.createElement('div');
+  fam.style.cssText = `list-style: none; padding: 0; position: fixed; top: 1em; left: 1em; width: 5em; z-index: 10;`;
+  
   function createFAB(tag, text, onclick) {
-    if (!tag && !onclick) return;
-    const li = document.createElement('li');
-    const button = li.appendChild(document.createElement('button'));
+    const button = document.createElement('button');
     button.style.width = '100%';
     button.textContent = text;
     button.onclick = onclick ?? (() => scrollTo(0, tag.getBoundingClientRect().top + window.scrollY));
-    fabul.appendChild(li);
+    return button;
   }
-  createFAB(null, 'TOP', () => scrollTo(0,0));
+  let famItemVisible = true;
+  const famItem = document.createElement('span');
+  //famItem.style.visibility = 'hidden';
+  fam.appendChild(createFAB(null, 'MENU', () => {
+    famItemVisible = !famItemVisible;
+    famItem.style.visibility = famItemVisible ? 'visible' : 'hidden';
+  }));
+  fam.appendChild(famItem);
+  famItem.appendChild(createFAB(null, 'TOP', () => scrollTo(0,0)));
   const equip = document.querySelector('body > h3');
   if (equip?.textContent?.startsWith('装備している')) {
-    createFAB(equip, '装備');
+    famItem.appendChild(createFAB(equip, '装備'));
   }
-  createFAB(document.querySelector('#weaponTable'), '武器');
-  createFAB(document.querySelector('#armorTable'), '防具');
-  document.body.appendChild(fabdiv);
+  famItem.appendChild(createFAB(document.querySelector('#weaponTable'), '武器'));
+  famItem.appendChild(createFAB(document.querySelector('#armorTable'), '防具'));
+  document.body.appendChild(fam);
 }}).catch(e => {});
 
 
