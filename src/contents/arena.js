@@ -16,10 +16,16 @@ getOption('enabled_arena_sort').then(enabled => { if(enabled == 'true') {
 }}).catch(e => {});
 
 getOption('enabled_arena_result').then(enabled => { if(enabled == 'true') {
+  const meta = document.querySelector('meta[name="viewport"]');
+  meta.content = `width=device-width, initial-scale=1, minimum-scale=1`;
+  
   const iframe = document.createElement('iframe');
+  const spacer = document.createElement('div');
+  spacer.style.height = '20vh';
+  document.body.prepend(spacer);
   
   // TODO: iframeのstyleを変更したい場合はここを変えてしまう
-  iframe.setAttribute('style', 'position: sticky; top: 0vh; left: 0; width: 90vw; height: 20vh; z-index: 10; background-color: #fff;');
+  iframe.setAttribute('style', 'position: fixed; top: 0; left: 0; width: 100%; height: 20vh; z-index: 10; background-color: #fff;');
   iframe.setAttribute('name', 'result');
   iframe.addEventListener('load', event => {
     // TODO: <meta name="color-scheme" content="light dark">を削除する
