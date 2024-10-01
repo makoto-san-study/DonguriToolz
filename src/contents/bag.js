@@ -164,8 +164,8 @@ getOption('enabled_bag_lock').then(enabled => { if(enabled == 'true') {
 
   function onclick(url) {
     return event => {
-      const id = getItemId(event.target.parentElement);
-      const lockTag = event.target.lastChild;
+      const id = getItemId(event.currentTarget.parentElement);
+      const lockTag = event.currentTarget.lastChild;
       const lockStatus = getLockStatus(lockTag);
       lockTag.parentElement.onclick = ()=>{};
       changeLockTag(lockTag);
@@ -216,7 +216,7 @@ getOption('enabled_bag_lock').then(enabled => { if(enabled == 'true') {
 getOption('enabled_bag_sort').then(enabled => { if(enabled == 'true') {
   const onclick = (order, direction, colIndex, saveOrder) => {
     return event => {
-      const table = event.target.parentElement.parentElement.parentElement;
+      const table = event.currentTarget.parentElement.parentElement.parentElement;
       const tbody = table.lastChild;
       const rowsArray = Array.from(tbody.rows);
       sort(rowsArray, colIndex, direction[colIndex]);
